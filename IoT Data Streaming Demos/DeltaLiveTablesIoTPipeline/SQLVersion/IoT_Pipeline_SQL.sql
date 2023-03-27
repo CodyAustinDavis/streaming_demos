@@ -5,7 +5,7 @@
 
 -- COMMAND ----------
 
-CREATE INCREMENTAL LIVE TABLE Raw_IoT_AllSensors_SQL
+CREATE STREAMING LIVE TABLE Raw_IoT_AllSensors_SQL
 COMMENT "This is the RAW All Sensors Table Partitioned By Sensor Measurement"
 TBLPROPERTIES ("quality" = "bronze")
 AS (
@@ -17,7 +17,7 @@ AS (
 
 -- COMMAND ----------
 
-CREATE INCREMENTAL LIVE TABLE Bronze_IoT_AllSensors_SQL
+CREATE STREAMING LIVE TABLE Bronze_IoT_AllSensors_SQL
 (
   CONSTRAINT mesurement_date_valid EXPECT (CAST(MeasurementDateTime AS TIMESTAMP) IS NOT NULL) ON VIOLATION DROP ROW,
   CONSTRAINT sensor_value_valid EXPECT (SensorValue > 1) ON VIOLATION DROP ROW
@@ -40,7 +40,7 @@ TBLPROPERTIES ("quality" = "bronze")
 
 -- COMMAND ----------
 
-CREATE INCREMENTAL LIVE TABLE silver_all_sensors;
+CREATE STREAMING LIVE TABLE silver_all_sensors;
 
 APPLY CHANGES INTO LIVE.silver_all_sensors
 FROM stream(LIVE.Bronze_IoT_AllSensors_SQL)

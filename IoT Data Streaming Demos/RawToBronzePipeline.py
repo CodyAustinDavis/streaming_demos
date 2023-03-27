@@ -29,11 +29,9 @@ import uuid
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC 
-# MAGIC --DROP DATABASE IF EXISTS codydemos CASCADE;
-# MAGIC CREATE DATABASE IF NOT EXISTS codydemos;
-# MAGIC USE codydemos;
+
+spark.sql("""CREATE DATABASE IF NOT EXISTS streamingdemos""")
+spark.sql("""USE streamingdemos""")
 
 # COMMAND ----------
 
@@ -45,13 +43,17 @@ runMode = dbutils.widgets.get("Run Mode")
 dbutils.widgets.text("File Name", "")
 fileName = dbutils.widgets.get("File Name")
 
+dbutils.widgets.dropdown("Start Over", "No", ["Yes", "No"])
+start_over = dbutils.widgets.get("Start Over")
+
 ## Set up source and checkpoints
-file_source_location = f"dbfs:/FileStore/shared_uploads/cody.davis@databricks.com/IotDemo/" #s3://codyaustindavisdemos/Demo/sales/"
-checkpoint_location = f"dbfs:/FileStore/shared_uploads/cody.davis@databricks.com/IotDemoCheckpoints/RawToBronze/"
+file_source_location = f"s3://codyaustindavisdemos/Demo/sales/"
+checkpoint_location = f"s3://codyaustindavisdemos/Demo/dbx_checkpoitns/"
 
 print("Now running Weather Data Streaming Service...")
 print(f"...from source location {file_source_location}")
 print(f"Run Mode: {runMode}")
+print(f"Start Over? : {start_over}")
 
 if runMode == "Static":
   print(f"Running file: {fileName}")
@@ -204,30 +206,26 @@ def ModelSourceSensorData(microBatchDf, BatchId):
   
   
   ##### Write to sink location
-  microBatchDf.write.format("delta").option("mergeSchema", "true").option("path", "/data/codydemos/bronze_allsensors").mode("overwrite").saveAsTable("Bronze_AllSensors")
-  df_waterDepth.write.format("delta").option("mergeSchema", "true").option("path", "/data/codydemos/bronze_waterdepthsensor").mode("overwrite").saveAsTable("Bronze_WaterDepthSensor")
-  df_airTemp.write.format("delta").mode("overwrite").option("path", "/data/codydemos/bronze_airtempsensor").saveAsTable("Bronze_AverageAirTemperatureSensor")
-  df_waterQuality.write.format("delta").mode("overwrite").option("path", "/data/codydemos/bronze_waterqualitysensor").saveAsTable("Bronze_WaterQualitySensor")
-  df_waterPH.write.format("delta").mode("overwrite").option("path", "/data/codydemos/bronze_waterphsensor").saveAsTable("Bronze_WaterPhSensor")
-  df_waterTemp.write.format("delta").mode("overwrite").option("path","/data/codydemos/bronze_watertemperaturesensor").saveAsTable("Bronze_WaterTemperatureSensor")
+  microBatchDf.write.format("delta").mode("overwrite").option("mergeSchema", "true").option("path", "/data/streamingdemos/bronze_allsensors").mode("overwrite").saveAsTable("Bronze_AllSensors")
+  df_waterDepth.write.format("delta").mode("overwrite").option("mergeSchema", "true").option("path", "/data/streamingdemos/bronze_waterdepthsensor").mode("overwrite").saveAsTable("Bronze_WaterDepthSensor")
+  df_airTemp.write.format("delta").mode("overwrite").option("path", "/data/streamingdemos/bronze_airtempsensor").saveAsTable("Bronze_AverageAirTemperatureSensor")
+  df_waterQuality.write.format("delta").mode("overwrite").option("path", "/data/streamingdemos/bronze_waterqualitysensor").saveAsTable("Bronze_WaterQualitySensor")
+  df_waterPH.write.format("delta").mode("overwrite").option("path", "/data/streamingdemos/bronze_waterphsensor").saveAsTable("Bronze_WaterPhSensor")
+  df_waterTemp.write.format("delta").mode("overwrite").option("path","/data/streamingdemos/bronze_watertemperaturesensor").saveAsTable("Bronze_WaterTemperatureSensor")
   
   return
 
 # COMMAND ----------
 
-#dbutils.fs.rm("/data/codydemos/bronze_allsensors", recurse=True)
-#dbutils.fs.rm("/data/codydemos/bronze_waterdepthsensor", recurse=True)
-#dbutils.fs.rm("/data/codydemos/bronze_airtempsensor", recurse=True)
-#dbutils.fs.rm("/data/codydemos/bronze_waterqualitysensor", recurse=True)
-#dbutils.fs.rm("/data/codydemos/bronze_waterphsensor", recurse=True)
-#dbutils.fs.rm("/data/codydemos/bronze_watertemperaturesensor", recurse=True)
-#dbutils.fs.rm("/data/codydemos/bronze_fullstreamfromkafka", recurse=True)
-
-# COMMAND ----------
-
-## Remove checkpoint for demo
-## recurse = True, deletes all files inside a directory
-#dbutils.fs.rm(checkpoint_location, recurse=True)
+if start_over == "Yes":
+    
+  dbutils.fs.rm("/data/streamingdemos/bronze_allsensors", recurse=True)
+  dbutils.fs.rm("/data/streamingdemos/bronze_waterdepthsensor", recurse=True)
+  dbutils.fs.rm("/data/streamingdemos/bronze_airtempsensor", recurse=True)
+  dbutils.fs.rm("/data/streamingdemos/bronze_waterqualitysensor", recurse=True)
+  dbutils.fs.rm("/data/streamingdemos/bronze_waterphsensor", recurse=True)
+  dbutils.fs.rm("/data/streamingdemos/bronze_watertemperaturesensor", recurse=True)
+  dbutils.fs.rm("/data/streamingdemos/bronze_fullstreamfromkafka", recurse=True)
 
 # COMMAND ----------
 
@@ -260,10 +258,6 @@ elif runMode == "Stream":
 # MAGIC <li> Easy to build and debug </li>
 # MAGIC <li> Logic is in one place for all teams to see, increasing speed, transparency, and knowledge transfer </li>
 # MAGIC <li> Less code to write overall since streaming takes care of the incremental data checkpoint for you </li>
-
-# COMMAND ----------
-
-
 
 # COMMAND ----------
 
