@@ -212,8 +212,6 @@ elif runMode == "Stream":
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC 
-# MAGIC SELECT * FROM codydemos.silver_allsensors
 
 # COMMAND ----------
 

@@ -161,7 +161,6 @@ df_raw_sensors = (spark
   
 df_raw_sensors.createOrReplaceGlobalTempView("unique_sensors")
 
-display(df_raw_sensors)
 
 # COMMAND ----------
 
@@ -245,19 +244,6 @@ elif runMode == "Stream":
      .foreachBatch(ModelSourceSensorData)
      .start()
    )
-
-# COMMAND ----------
-
-# MAGIC %md 
-# MAGIC 
-# MAGIC <h2> Overall Value: </h2>
-# MAGIC 
-# MAGIC <li> Highly scalable and easy to read pipelines </li>
-# MAGIC <li> Multi language, same tech for any cloud platform </li>
-# MAGIC <li> Read and write to almost any data source </li>
-# MAGIC <li> Easy to build and debug </li>
-# MAGIC <li> Logic is in one place for all teams to see, increasing speed, transparency, and knowledge transfer </li>
-# MAGIC <li> Less code to write overall since streaming takes care of the incremental data checkpoint for you </li>
 
 # COMMAND ----------
 
