@@ -205,7 +205,7 @@ def ModelSourceSensorData(microBatchDf, BatchId):
   
   
   ##### Write to sink location
-  microBatchDf.write.format("delta").mode("overwrite").option("mergeSchema", "true").option("path", "/data/streamingdemos/bronze_allsensors").mode("overwrite").saveAsTable("streamingdemos.Bronze_AllSensors")
+  microBatchDf.write.format("delta").mode("overwrite").option("mergeSchema", "true").option("path", "/data/streamingdemos/bronze_allsensors").mode("overwrite").saveAsTable("streamingdemos.bronze_allsensors")
   df_waterDepth.write.format("delta").mode("overwrite").option("mergeSchema", "true").option("path", "/data/streamingdemos/bronze_waterdepthsensor").mode("overwrite").saveAsTable("streamingdemos.Bronze_WaterDepthSensor")
   df_airTemp.write.format("delta").mode("overwrite").option("path", "/data/streamingdemos/bronze_airtempsensor").saveAsTable("streamingdemos.Bronze_AverageAirTemperatureSensor")
   df_waterQuality.write.format("delta").mode("overwrite").option("path", "/data/streamingdemos/bronze_waterqualitysensor").saveAsTable("streamingdemos.Bronze_WaterQualitySensor")
@@ -217,7 +217,7 @@ def ModelSourceSensorData(microBatchDf, BatchId):
 # COMMAND ----------
 
 if start_over == "Yes":
-    
+  dbutils.fs.rm(checkpoint_location, recurse=True)
   dbutils.fs.rm("/data/streamingdemos/bronze_allsensors", recurse=True)
   dbutils.fs.rm("/data/streamingdemos/bronze_waterdepthsensor", recurse=True)
   dbutils.fs.rm("/data/streamingdemos/bronze_airtempsensor", recurse=True)
