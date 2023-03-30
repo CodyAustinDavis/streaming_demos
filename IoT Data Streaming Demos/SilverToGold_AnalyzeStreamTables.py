@@ -13,7 +13,7 @@ from pyspark.sql.functions import *
 
 # MAGIC %sql
 # MAGIC 
-# MAGIC USE codydemos;
+# MAGIC USE streamingdemos;
 
 # COMMAND ----------
 

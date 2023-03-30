@@ -33,10 +33,8 @@ from delta.tables import *
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC 
-# MAGIC CREATE DATABASE IF NOT EXISTS streamingdemos;
-# MAGIC USE streamingdemos;
+spark.sql("""CREATE DATABASE IF NOT EXISTS streamingdemos""")
+spark.sql("""USE streamingdemos;""")
 
 # COMMAND ----------
 
@@ -180,6 +178,9 @@ def stream5Controller(microBatchDf, BatchId):
   .whenNotMatchedInsertAll()
   .execute()
   )
+
+
+  spark.sql("OPTIMIZE streamingdemos.silver_allsensors ZORDER BY (MeasurementDateTime)")
   
   
   ##
@@ -208,8 +209,3 @@ elif runMode == "Stream":
      .foreachBatch(stream5Controller)
      .start()
     )
-
-# COMMAND ----------
-
-spark.sql("""OPTIMIZE streamingdemos.silver_allsensors
-ZORDER BY (MeasurementDateTime)""")
