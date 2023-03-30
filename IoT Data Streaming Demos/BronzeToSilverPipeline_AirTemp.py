@@ -35,8 +35,8 @@ from delta.tables import *
 
 # MAGIC %sql
 # MAGIC 
-# MAGIC CREATE DATABASE IF NOT EXISTS codydemos;
-# MAGIC USE codydemos;
+# MAGIC CREATE DATABASE IF NOT EXISTS streamingdemos;
+# MAGIC USE streamingdemos;
 
 # COMMAND ----------
 
@@ -130,7 +130,7 @@ if isSilverAirTempThere == False:
     .format("delta")
     .mode("overwrite")
     .option("path", file_sink_location_stream_2)
-    .saveAsTable("silver_airtempsensor")
+    .saveAsTable("streamingdemos.silver_airtempsensor")
   )
   
   print("Created Empty Silver Air Temp Table for Stream 2!")

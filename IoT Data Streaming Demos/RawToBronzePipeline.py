@@ -205,12 +205,12 @@ def ModelSourceSensorData(microBatchDf, BatchId):
   
   
   ##### Write to sink location
-  microBatchDf.write.format("delta").mode("overwrite").option("mergeSchema", "true").option("path", "/data/streamingdemos/bronze_allsensors").mode("overwrite").saveAsTable("Bronze_AllSensors")
-  df_waterDepth.write.format("delta").mode("overwrite").option("mergeSchema", "true").option("path", "/data/streamingdemos/bronze_waterdepthsensor").mode("overwrite").saveAsTable("Bronze_WaterDepthSensor")
-  df_airTemp.write.format("delta").mode("overwrite").option("path", "/data/streamingdemos/bronze_airtempsensor").saveAsTable("Bronze_AverageAirTemperatureSensor")
-  df_waterQuality.write.format("delta").mode("overwrite").option("path", "/data/streamingdemos/bronze_waterqualitysensor").saveAsTable("Bronze_WaterQualitySensor")
-  df_waterPH.write.format("delta").mode("overwrite").option("path", "/data/streamingdemos/bronze_waterphsensor").saveAsTable("Bronze_WaterPhSensor")
-  df_waterTemp.write.format("delta").mode("overwrite").option("path","/data/streamingdemos/bronze_watertemperaturesensor").saveAsTable("Bronze_WaterTemperatureSensor")
+  microBatchDf.write.format("delta").mode("overwrite").option("mergeSchema", "true").option("path", "/data/streamingdemos/bronze_allsensors").mode("overwrite").saveAsTable("streamingdemos.Bronze_AllSensors")
+  df_waterDepth.write.format("delta").mode("overwrite").option("mergeSchema", "true").option("path", "/data/streamingdemos/bronze_waterdepthsensor").mode("overwrite").saveAsTable("streamingdemos.Bronze_WaterDepthSensor")
+  df_airTemp.write.format("delta").mode("overwrite").option("path", "/data/streamingdemos/bronze_airtempsensor").saveAsTable("streamingdemos.Bronze_AverageAirTemperatureSensor")
+  df_waterQuality.write.format("delta").mode("overwrite").option("path", "/data/streamingdemos/bronze_waterqualitysensor").saveAsTable("streamingdemos.Bronze_WaterQualitySensor")
+  df_waterPH.write.format("delta").mode("overwrite").option("path", "/data/streamingdemos/bronze_waterphsensor").saveAsTable("streamingdemos.Bronze_WaterPhSensor")
+  df_waterTemp.write.format("delta").mode("overwrite").option("path","/data/streamingdemos/bronze_watertemperaturesensor").saveAsTable("streamingdemos.Bronze_WaterTemperatureSensor")
   
   return
 
@@ -265,6 +265,6 @@ df_raw = (spark
 .trigger(once=True) #processingTime = '1m', continuous='30 seconds'
 .option("checkpointLocation", checkpoint_location)
 .option("path", "/data/codydemos/bronze_fullstreamfromkafka")
-.table("BronzeFullStreamFromKafka")
+.table("streamingdemos.BronzeFullStreamFromKafka")
 )
 """

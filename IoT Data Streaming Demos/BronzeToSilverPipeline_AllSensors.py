@@ -35,8 +35,8 @@ from delta.tables import *
 
 # MAGIC %sql
 # MAGIC 
-# MAGIC CREATE DATABASE IF NOT EXISTS codydemos;
-# MAGIC USE codydemos;
+# MAGIC CREATE DATABASE IF NOT EXISTS streamingdemos;
+# MAGIC USE streamingdemos;
 
 # COMMAND ----------
 
@@ -98,7 +98,7 @@ elif runMode == "Stream":
   stream5_df = (spark
      .readStream
      .format("delta")
-     .load(file_source_location_stream_5) #table("bronze_allsensors")
+     .table("streamingdemos.bronze_allsensors")
     )
 
 # COMMAND ----------
@@ -131,7 +131,7 @@ if isAllSensorsTempThere == False:
     .mode("overwrite")
     .partitionBy("SensorMeasurement")
     .option("path", file_sink_location_stream_5)
-    .saveAsTable("silver_allsensors")
+    .saveAsTable("streamingdemos.silver_allsensors")
   )
   
   print("Created Empty Silver All Sensor Table for Stream 5!")
@@ -211,11 +211,5 @@ elif runMode == "Stream":
 
 # COMMAND ----------
 
-# MAGIC %sql
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC 
-# MAGIC OPTIMIZE codydemos.silver_allsensors
-# MAGIC ZORDER BY (MeasurementDateTime)
+spark.sql("""OPTIMIZE streamingdemos.silver_allsensors
+ZORDER BY (MeasurementDateTime)""")

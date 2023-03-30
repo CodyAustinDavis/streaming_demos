@@ -23,7 +23,7 @@ from pyspark.sql.functions import *
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC CREATE VIEW IF NOT EXISTS air_temp_ma_live
+# MAGIC CREATE VIEW IF NOT EXISTS streamingdemos.air_temp_ma_live
 # MAGIC AS
 # MAGIC SELECT *,
 # MAGIC avg(`SensorValue`) OVER (
@@ -39,15 +39,15 @@ from pyspark.sql.functions import *
 # MAGIC           365 PRECEDING AND
 # MAGIC           CURRENT ROW
 # MAGIC       ) AS TempLongMovingAverage
-# MAGIC FROM silver_airtempsensor;
+# MAGIC FROM streamingdemos.silver_airtempsensor;
 
 # COMMAND ----------
 
 # MAGIC %sql
 # MAGIC 
-# MAGIC DROP TABLE IF EXISTS gold_airtempanalysis;
+# MAGIC DROP TABLE IF EXISTS streamingdemos.gold_airtempanalysis;
 # MAGIC 
-# MAGIC CREATE TABLE IF NOT EXISTS gold_airtempanalysis 
+# MAGIC CREATE TABLE IF NOT EXISTS streamingdemos.gold_airtempanalysis 
 # MAGIC USING DELTA 
 # MAGIC AS (
 # MAGIC 
@@ -65,11 +65,12 @@ from pyspark.sql.functions import *
 # MAGIC             365 PRECEDING AND
 # MAGIC             CURRENT ROW
 # MAGIC         ) AS TempLongMovingAverage
-# MAGIC   FROM silver_airtempsensor
+# MAGIC   FROM streamingdemos.silver_airtempsensor
 # MAGIC );
 
 # COMMAND ----------
 
+# DBTITLE 1,Check View Directly in notebook
 # MAGIC %sql 
 # MAGIC 
 # MAGIC SELECT *,
@@ -86,15 +87,15 @@ from pyspark.sql.functions import *
 # MAGIC           365 PRECEDING AND
 # MAGIC           CURRENT ROW
 # MAGIC       ) AS WaterTempLongMovingAverage
-# MAGIC FROM silver_waterqualitysensor;
+# MAGIC FROM streamingdemos.silver_waterqualitysensor;
 
 # COMMAND ----------
 
 # MAGIC %sql 
 # MAGIC 
-# MAGIC DROP TABLE IF EXISTS gold_waterqualityanalysis;
+# MAGIC DROP TABLE IF EXISTS streamingdemos.gold_waterqualityanalysis;
 # MAGIC 
-# MAGIC CREATE TABLE IF NOT EXISTS gold_waterqualityanalysis
+# MAGIC CREATE TABLE IF NOT EXISTS streamingdemos.gold_waterqualityanalysis
 # MAGIC USING DELTA
 # MAGIC AS (
 # MAGIC   SELECT *,
@@ -111,7 +112,7 @@ from pyspark.sql.functions import *
 # MAGIC             365 PRECEDING AND
 # MAGIC             CURRENT ROW
 # MAGIC         ) AS WaterTempLongMovingAverage
-# MAGIC   FROM silver_waterqualitysensor
+# MAGIC   FROM streamingdemos.silver_waterqualitysensor
 # MAGIC );
 
 # COMMAND ----------
