@@ -101,14 +101,16 @@ elif runMode == "Stream":
 
 # COMMAND ----------
 
-dbutils.fs.rm(file_sink_location_stream_5, recurse=True)
+## Remove checkpoint for demo
+## recurse = True, deletes all files inside a directory
+dbutils.fs.rm(checkpoint_location_stream_5, recurse=True)
 
 # COMMAND ----------
 
 ### Define silver table schema
 
 silverAllSensorSchema = StructType([StructField("MeasurementDateTime", TimestampType(), True),
-                                    StructField("SensorValue", DecimalType(), True),
+                                    StructField("SensorValue", FloatType(), True),
                                     StructField("SensorUnitDescription", StringType(), True),
                                     StructField("SensorMeasurement", StringType(), True),
                                     StructField("SensorLocation", StringType(), True),
@@ -185,12 +187,6 @@ def stream5Controller(microBatchDf, BatchId):
   
   ##
   return
-
-# COMMAND ----------
-
-## Remove checkpoint for demo
-## recurse = True, deletes all files inside a directory
-dbutils.fs.rm(checkpoint_location_stream_5, recurse=True)
 
 # COMMAND ----------
 
