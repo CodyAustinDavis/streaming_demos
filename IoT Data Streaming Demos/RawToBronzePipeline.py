@@ -47,8 +47,8 @@ dbutils.widgets.dropdown("Start Over", "No", ["Yes", "No"])
 start_over = dbutils.widgets.get("Start Over")
 
 ## Set up source and checkpoints
-file_source_location = f"s3://codyaustindavisdemos/Demo/sales/"
-checkpoint_location = f"s3://codyaustindavisdemos/Demo/dbx_checkpoitns/"
+file_source_location = f"dbfs:/FileStore/shared_uploads/cody.davis@databricks.com/IotDemo/" #s3://codyaustindavisdemos/Demo/sales/"
+checkpoint_location = f"dbfs:/FileStore/shared_uploads/cody.davis@databricks.com/IotDemoCheckpoints/RawToBronze/"
 
 print("Now running Weather Data Streaming Service...")
 print(f"...from source location {file_source_location}")
