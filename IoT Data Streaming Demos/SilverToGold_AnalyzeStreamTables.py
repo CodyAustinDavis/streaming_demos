@@ -117,11 +117,24 @@ from pyspark.sql.functions import *
 
 # COMMAND ----------
 
-# MAGIC %md
+# MAGIC %sql
 # MAGIC 
-# MAGIC <h2> Overall Value </h2>
+# MAGIC CREATE OR REPLACE VIEW streamingdemos.water_quality_forecast
+# MAGIC AS (
+# MAGIC WITH water_forecast AS (
+# MAGIC SELECt ds AS MeasurementDateTime, 'forecast' AS ValueType,  yhat AS SensorValue
+# MAGIC FROM streamingdemos.silver_hourly_forecast
+# MAGIC WHERE SensorMeasurement = 'h2o_quality'
+# MAGIC ),
+# MAGIC combined_model AS (
+# MAGIC SELECT MeasurementDateTime, 'actuals' AS ValueType, WaterTempShortMovingAverage AS SensorValue FROm streamingdemos.gold_waterqualityanalysis
 # MAGIC 
-# MAGIC <li> Quicker time to insights </li>
-# MAGIC <li> Increased Collaboration between teams </li>
-# MAGIC <li> Embedded SQL </li>
-# MAGIC <li> More transparent Data Quality Monitoring </li>
+# MAGIC UNION 
+# MAGIC 
+# MAGIC SELECT MeasurementDateTime, ValueType, SensorValue FROM water_forecast
+# MAGIC )
+# MAGIC 
+# MAGIC SELECT * FROM combined_model
+# MAGIC WHERE SensorValue >= 0 ORDER BY MeasurementDateTime DESC 
+# MAGIC LIMIT 1000
+# MAGIC )
