@@ -1,9 +1,9 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC <h1> Data Engineering Pipeline - Silver </h1>
-# MAGIC 
+# MAGIC
 # MAGIC <h2> Bronze to Silver: Water Depth Notebook </h2>
-# MAGIC 
+# MAGIC
 # MAGIC <li> Stream from multiple sources in one notebook </li>
 # MAGIC <li> Perform data Cleaning and ETL in forBatch design </li>
 # MAGIC <li> Structured Streaming can use the same code, whether streaming or performing ad-hoc analysis. </li>
@@ -13,13 +13,13 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC ## Current Stage: Bronze --> Silver
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC <img src="https://databricks.com/wp-content/uploads/2019/08/Delta-Lake-Multi-Hop-Architecture-Bronze.png" >
 
 # COMMAND ----------
@@ -34,14 +34,14 @@ from delta.tables import *
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC 
+# MAGIC
 # MAGIC CREATE DATABASE IF NOT EXISTS streamingdemos;
 # MAGIC USE streamingdemos;
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC <b> Feature: </b> Add parameters to notebooks that jobs and other notebooks can use! Great for complex workflows or user friendly code!
 
 # COMMAND ----------
@@ -72,13 +72,13 @@ uuidUdf= udf(lambda : str(uuid.uuid4()),StringType())
 # COMMAND ----------
 
 # MAGIC %md 
-# MAGIC 
+# MAGIC
 # MAGIC ## Notebook to stream multiple sources into multiple sinks
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC ### Stream 1: Water Depth Delta Table: Bronze --> Silver
 
 # COMMAND ----------
@@ -87,8 +87,8 @@ uuidUdf= udf(lambda : str(uuid.uuid4()),StringType())
 
 ### Stream # 1 for Water depth
 
-file_source_location_stream_1 = "/data/codydemos/bronze_waterdepthsensor/"
-file_sink_location_stream_1 = "/data/codydemos/silver_waterdepthsensor/"
+file_source_location_stream_1 = "/data/streamingdemos/bronze_waterdepthsensor/"
+file_sink_location_stream_1 = "/data/streamingdemos/silver_waterdepthsensor/"
 checkpoint_location_stream_1 = checkpoint_location + "WaterDepth/"
 
 if runMode == "Static":
@@ -127,6 +127,8 @@ silverWaterDepthSchema = StructType([StructField("MeasurementDateTime", Timestam
 ### create silver table if not exists
 
 isSilverWaterDepthThere = DeltaTable.isDeltaTable(spark, file_sink_location_stream_1)
+
+
 print(f"Silver Table for Water Depth Exists: {isSilverWaterDepthThere}")
 
 if isSilverWaterDepthThere == False:

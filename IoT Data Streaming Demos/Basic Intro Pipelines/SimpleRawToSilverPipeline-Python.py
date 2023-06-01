@@ -1,9 +1,9 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC # Data Engineering Pipeline </h1>
-# MAGIC 
+# MAGIC
 # MAGIC <h2> Structured Streaming With Sensor Data </h2>
-# MAGIC 
+# MAGIC
 # MAGIC <li> Structured Streaming can use the same code, whether streaming or performing ad-hoc analysis. </li>
 # MAGIC <li> Read a table, perform modelling, report on data in real time. </li>
 # MAGIC <li> Debug and Develop with same code. </li>
@@ -11,19 +11,19 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC ## Current Stage: Raw --> Bronze
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC <img src="https://databricks.com/wp-content/uploads/2019/08/Delta-Lake-Multi-Hop-Architecture-Bronze.png" >
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC ## Configs
 
 # COMMAND ----------
@@ -88,7 +88,7 @@ weatherInputSensorSchema = StructType([StructField("Skip", StringType(), True),
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC ## Read Stream
 
 # COMMAND ----------
@@ -149,7 +149,7 @@ dbutils.fs.rm(checkpoint_location, recurse=True)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC ## Write Stream
 
 # COMMAND ----------
@@ -176,14 +176,14 @@ elif runMode == "Stream":
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC # Next Step: Merge Upsert
 
 # COMMAND ----------
 
 # DBTITLE 1,Create Silver Target Table
 # MAGIC %sql
-# MAGIC 
+# MAGIC
 # MAGIC CREATE OR REPLACE TABLE Silver_AllSensors_Simple 
 # MAGIC (
 # MAGIC MeasurementDateTime TIMESTAMP,
@@ -258,11 +258,11 @@ dbutils.fs.rm("dbfs:/FileStore/shared_uploads/cody.davis@databricks.com/IotDemoC
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC 
+# MAGIC
 # MAGIC SELECT * FROM Silver_AllSensors_Simple
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC 
+# MAGIC
 # MAGIC OPTIMIZE Silver_AllSensors_Simple ZORDER BY (MeasurementDateTime)

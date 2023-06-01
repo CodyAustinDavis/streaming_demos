@@ -1,15 +1,15 @@
 -- Databricks notebook source
 -- MAGIC %md
 -- MAGIC # Data Engineering Pipeline </h1>
--- MAGIC 
+-- MAGIC
 -- MAGIC <h2> Batch ETL With Sensor Data </h2>
 
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC 
+-- MAGIC
 -- MAGIC ## SQL Best Practices:
--- MAGIC 
+-- MAGIC
 -- MAGIC 1. Cast Data Types
 -- MAGIC 2. Key Generation - auto_id
 -- MAGIC 3. Location Definition
@@ -20,7 +20,7 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC 
+-- MAGIC
 -- MAGIC <img src="https://databricks.com/wp-content/uploads/2019/08/Delta-Lake-Multi-Hop-Architecture-Bronze.png" >
 
 -- COMMAND ----------
@@ -69,7 +69,7 @@ FROM csv.`dbfs:/FileStore/shared_uploads/cody.davis@databricks.com/IotDemo/` --C
 -- COMMAND ----------
 
 -- MAGIC %md 
--- MAGIC 
+-- MAGIC
 -- MAGIC ## Exhaustive list of all COPY INTO Options
 -- MAGIC https://docs.databricks.com/sql/language-manual/delta-copy-into.html#format-options-1
 
@@ -100,7 +100,7 @@ SELECT * FROM bronze_staging_all_sensors
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC 
+-- MAGIC
 -- MAGIC # Next Step: Merge Upsert
 
 -- COMMAND ----------
@@ -145,16 +145,16 @@ SELECT * FROM Silver_AllSensors_Simple
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC 
+-- MAGIC
 -- MAGIC ## Exhaustive list of optimizations on Delta Tables
 -- MAGIC https://docs.databricks.com/delta/optimizations/file-mgmt.html#set-a-target-size
 
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC 
+-- MAGIC
 -- MAGIC # Levels of optimization on Databricks
--- MAGIC 
+-- MAGIC
 -- MAGIC ## Partitions - Do not over partition - usually ZORDERING covers what you need - even in big tables
 -- MAGIC ### File Sizes - smaller for BI heavy and update heavy tables 64mb to 128mb
 -- MAGIC #### Order of files -- ZORDER(col,col) -- ZORDER on most used filtering/join columns, in order of cardinality like a funnel
@@ -182,7 +182,7 @@ OPTIMIZE Silver_AllSensors_Simple ZORDER BY (MeasurementDateTime, sellerid, orde
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC 
+-- MAGIC
 -- MAGIC ## Details on Bloom Indexs Here:
 -- MAGIC https://docs.databricks.com/delta/optimizations/bloom-filters.html
 
@@ -200,7 +200,7 @@ FOR COLUMNS(Id OPTIONS (fpp=0.1, numItems=50000000))
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC 
+-- MAGIC
 -- MAGIC # Gold Tables and Views!
 
 -- COMMAND ----------
@@ -254,5 +254,5 @@ avg(`SensorValue`) OVER (
 -- COMMAND ----------
 
 -- MAGIC %sql
--- MAGIC 
+-- MAGIC
 -- MAGIC SELECT * FROM air_temp_ma_live ORDER BY MeasurementDateTime

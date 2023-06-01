@@ -1,9 +1,9 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC <h1> Data Engineering Pipeline - Silver </h1>
-# MAGIC 
+# MAGIC
 # MAGIC <h2> Bronze to Silver: Air Temp Notebook</h2>
-# MAGIC 
+# MAGIC
 # MAGIC <li> Stream from multiple sources in one notebook </li>
 # MAGIC <li> Perform data Cleaning and ETL in forBatch design </li>
 # MAGIC <li> Structured Streaming can use the same code, whether streaming or performing ad-hoc analysis. </li>
@@ -13,13 +13,13 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC ## Current Stage: Bronze --> Silver
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC <img src="https://databricks.com/wp-content/uploads/2019/08/Delta-Lake-Multi-Hop-Architecture-Bronze.png" >
 
 # COMMAND ----------
@@ -34,7 +34,7 @@ from delta.tables import *
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC 
+# MAGIC
 # MAGIC CREATE DATABASE IF NOT EXISTS streamingdemos;
 # MAGIC USE streamingdemos;
 
@@ -66,13 +66,13 @@ uuidUdf= udf(lambda : str(uuid.uuid4()),StringType())
 # COMMAND ----------
 
 # MAGIC %md 
-# MAGIC 
+# MAGIC
 # MAGIC ## Notebook to stream multiple sources into multiple sinks
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC ### Stream 4: Air Temp Delta Table: Bronze --> Silver
 
 # COMMAND ----------
@@ -81,8 +81,8 @@ uuidUdf= udf(lambda : str(uuid.uuid4()),StringType())
 
 ### Stream # 4 for Water Temp
 
-file_source_location_stream_4 = "/data/codydemos/bronze_watertemperaturesensor/"
-file_sink_location_stream_4 = "/data/codydemos/silver_watertemperaturesensor/"
+file_source_location_stream_4 = "/data/streamingdemos/bronze_watertemperaturesensor/"
+file_sink_location_stream_4 = "/data/streamingdemos/silver_watertemperaturesensor/"
 checkpoint_location_stream_4 = checkpoint_location + "WaterTemp/"
 
 if runMode == "Static":
@@ -168,7 +168,7 @@ dbutils.fs.rm(checkpoint_location_stream_4, recurse=True)
 
 if runMode == "Static":
   
-  stream2Controller(stream4_df, 1)
+  stream4Controller(stream4_df, 1)
   
 elif runMode == "Stream":
   

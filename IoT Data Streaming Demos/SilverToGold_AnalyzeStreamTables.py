@@ -1,8 +1,8 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC <h1> Silver to Gold: Analytics of IoT stream tables </h1>
-# MAGIC 
+# MAGIC
 # MAGIC This notebook uses any preferred analyst language to quickly get insights from the tables Data Engineering just streamed in!
 
 # COMMAND ----------
@@ -12,7 +12,7 @@ from pyspark.sql.functions import *
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC 
+# MAGIC
 # MAGIC USE streamingdemos;
 
 # COMMAND ----------
@@ -44,13 +44,11 @@ from pyspark.sql.functions import *
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC 
-# MAGIC DROP TABLE IF EXISTS streamingdemos.gold_airtempanalysis;
-# MAGIC 
-# MAGIC CREATE TABLE IF NOT EXISTS streamingdemos.gold_airtempanalysis 
+# MAGIC
+# MAGIC CREATE OR REPLACE TABle  streamingdemos.gold_airtempanalysis 
 # MAGIC USING DELTA 
 # MAGIC AS (
-# MAGIC 
+# MAGIC
 # MAGIC   SELECT *,
 # MAGIC   avg(`SensorValue`) OVER (
 # MAGIC           ORDER BY `MeasurementDateTime`
@@ -58,7 +56,7 @@ from pyspark.sql.functions import *
 # MAGIC             30 PRECEDING AND
 # MAGIC             CURRENT ROW
 # MAGIC         ) AS TempShortMovingAverage,
-# MAGIC 
+# MAGIC
 # MAGIC   avg(`SensorValue`) OVER (
 # MAGIC           ORDER BY `MeasurementDateTime`
 # MAGIC           ROWS BETWEEN
@@ -72,7 +70,7 @@ from pyspark.sql.functions import *
 
 # DBTITLE 1,Check View Directly in notebook
 # MAGIC %sql 
-# MAGIC 
+# MAGIC
 # MAGIC SELECT *,
 # MAGIC avg(`SensorValue`) OVER (
 # MAGIC         ORDER BY `MeasurementDateTime`
@@ -92,10 +90,9 @@ from pyspark.sql.functions import *
 # COMMAND ----------
 
 # MAGIC %sql 
-# MAGIC 
-# MAGIC DROP TABLE IF EXISTS streamingdemos.gold_waterqualityanalysis;
-# MAGIC 
-# MAGIC CREATE TABLE IF NOT EXISTS streamingdemos.gold_waterqualityanalysis
+# MAGIC
+# MAGIC
+# MAGIC CREATE OR REPLACE TABLE streamingdemos.gold_waterqualityanalysis
 # MAGIC USING DELTA
 # MAGIC AS (
 # MAGIC   SELECT *,
@@ -105,7 +102,7 @@ from pyspark.sql.functions import *
 # MAGIC             30 PRECEDING AND
 # MAGIC             CURRENT ROW
 # MAGIC         ) AS WaterTempShortMovingAverage,
-# MAGIC 
+# MAGIC
 # MAGIC   avg(`SensorValue`) OVER (
 # MAGIC           ORDER BY `MeasurementDateTime`
 # MAGIC           ROWS BETWEEN
@@ -118,7 +115,7 @@ from pyspark.sql.functions import *
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC 
+# MAGIC
 # MAGIC CREATE OR REPLACE VIEW streamingdemos.water_quality_forecast
 # MAGIC AS (
 # MAGIC WITH water_forecast AS (
@@ -128,12 +125,12 @@ from pyspark.sql.functions import *
 # MAGIC ),
 # MAGIC combined_model AS (
 # MAGIC SELECT MeasurementDateTime, 'actuals' AS ValueType, WaterTempShortMovingAverage AS SensorValue FROm streamingdemos.gold_waterqualityanalysis
-# MAGIC 
+# MAGIC
 # MAGIC UNION 
-# MAGIC 
+# MAGIC
 # MAGIC SELECT MeasurementDateTime, ValueType, SensorValue FROM water_forecast
 # MAGIC )
-# MAGIC 
+# MAGIC
 # MAGIC SELECT * FROM combined_model
 # MAGIC WHERE SensorValue >= 0 ORDER BY MeasurementDateTime DESC 
 # MAGIC LIMIT 1000
