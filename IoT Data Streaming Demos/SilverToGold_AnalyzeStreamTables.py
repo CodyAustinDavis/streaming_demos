@@ -4,6 +4,8 @@
 # MAGIC <h1> Silver to Gold: Analytics of IoT stream tables </h1>
 # MAGIC
 # MAGIC This notebook uses any preferred analyst language to quickly get insights from the tables Data Engineering just streamed in!
+# MAGIC
+# MAGIC
 
 # COMMAND ----------
 
@@ -12,7 +14,7 @@ from pyspark.sql.functions import *
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC
+# MAGIC CREATE DATABASE IF NOT EXISTS streamingdemos;
 # MAGIC USE streamingdemos;
 
 # COMMAND ----------
@@ -40,6 +42,7 @@ from pyspark.sql.functions import *
 # MAGIC           CURRENT ROW
 # MAGIC       ) AS TempLongMovingAverage
 # MAGIC FROM streamingdemos.silver_airtempsensor;
+# MAGIC
 
 # COMMAND ----------
 
@@ -86,6 +89,7 @@ from pyspark.sql.functions import *
 # MAGIC           CURRENT ROW
 # MAGIC       ) AS WaterTempLongMovingAverage
 # MAGIC FROM streamingdemos.silver_waterqualitysensor;
+# MAGIC
 
 # COMMAND ----------
 

@@ -1,17 +1,18 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC <h1> Data Engineering Pipeline </h1>
+# MAGIC
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC ## Current Stage: Kafka --> Bronze
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC <img src="https://databricks.com/wp-content/uploads/2019/08/Delta-Lake-Multi-Hop-Architecture-Bronze.png" >
 
 # COMMAND ----------
@@ -63,7 +64,7 @@ weatherInputSensorSchema = StructType([StructField("MeasurementDateTime", Timest
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC ##### Read file: Same output for either stream or static mode
 
 # COMMAND ----------
@@ -110,13 +111,13 @@ display(df_cleaned)
 # COMMAND ----------
 
 # MAGIC %md 
-# MAGIC 
+# MAGIC
 # MAGIC ## Stream one source to multiple sinks!
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC 
+# MAGIC
 # MAGIC --DROP DATABASE IF EXISTS codydemos CASCADE;
 # MAGIC CREATE DATABASE IF NOT EXISTS codydemos;
 # MAGIC USE codydemos;
@@ -124,13 +125,13 @@ display(df_cleaned)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC <img src="https://image.slidesharecdn.com/tathagatadas-191104200312/95/designing-etl-pipelines-with-structured-streaming-and-delta-lakehow-to-architect-things-right-40-638.jpg?cb=1572897862" >
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC ## Perform Advacned ETL Logic inside the forEachBatch function
 
 # COMMAND ----------
@@ -241,26 +242,26 @@ elif runMode == "Stream":
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC ## Trigger options: default, continous, once, processing time interval
-# MAGIC 
+# MAGIC
 # MAGIC # Default trigger (runs micro-batch as soon as it can)
 # MAGIC df.writeStream \
 # MAGIC   .format("console") \
 # MAGIC   .start()
-# MAGIC 
+# MAGIC
 # MAGIC # ProcessingTime trigger with two-seconds micro-batch interval
 # MAGIC df.writeStream \
 # MAGIC   .format("console") \
 # MAGIC   .trigger(processingTime='2 seconds') \
 # MAGIC   .start()
-# MAGIC 
+# MAGIC
 # MAGIC # One-time trigger
 # MAGIC df.writeStream \
 # MAGIC   .format("console") \
 # MAGIC   .trigger(once=True) \
 # MAGIC   .start()
-# MAGIC 
+# MAGIC
 # MAGIC # Continuous trigger with one-second checkpointing interval
 # MAGIC df.writeStream
 # MAGIC   .format("console")
@@ -270,11 +271,11 @@ elif runMode == "Stream":
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC ## Processing Speeds: 
-# MAGIC 
+# MAGIC
 # MAGIC ### Continous: ~1 ms latency
-# MAGIC 
+# MAGIC
 # MAGIC ### microBatch: ~100 ms latency
 
 # COMMAND ----------

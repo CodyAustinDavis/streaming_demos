@@ -185,6 +185,7 @@ OPTIMIZE Silver_AllSensors_Simple ZORDER BY (MeasurementDateTime, sellerid, orde
 -- MAGIC
 -- MAGIC ## Details on Bloom Indexs Here:
 -- MAGIC https://docs.databricks.com/delta/optimizations/bloom-filters.html
+-- MAGIC
 
 -- COMMAND ----------
 

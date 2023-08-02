@@ -143,6 +143,7 @@ if isAllSensorsTempThere == False:
 # MAGIC ## Tip! 
 # MAGIC
 # MAGIC To make foreachBatch indempotent delta supports the following:
+# MAGIC
 
 # COMMAND ----------
 

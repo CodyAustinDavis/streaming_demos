@@ -50,7 +50,7 @@ fileName = dbutils.widgets.get("File Name")
 
 ## Set up source and checkpoints
 
-checkpoint_location = f"<silver_checkpoint_location>"
+checkpoint_location = f"dbfs:/FileStore/shared_uploads/cody.davis@databricks.com/IotDemoCheckpoints/BronzeToSilver/"
 
 print("Now running Bronze --> Silver Weather Data Streaming Service...")
 print(f"Run Mode: {runMode}")

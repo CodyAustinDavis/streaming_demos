@@ -1,9 +1,9 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC <h1> Data Engineering Pipeline - Silver </h1>
-# MAGIC 
+# MAGIC
 # MAGIC <h2> Bronze to Silver: All Sensors Notebook (Bronze to silver example of 1/6 tables</h2>
-# MAGIC 
+# MAGIC
 # MAGIC <li> Stream from multiple sources in one notebook </li>
 # MAGIC <li> Perform data Cleaning and ETL in forBatch design </li>
 # MAGIC <li> Structured Streaming can use the same code, whether streaming or performing ad-hoc analysis. </li>
@@ -13,13 +13,13 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC ## Current Stage: Bronze --> Silver
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC <img src="https://databricks.com/wp-content/uploads/2019/08/Delta-Lake-Multi-Hop-Architecture-Bronze.png" >
 
 # COMMAND ----------
@@ -34,7 +34,7 @@ from delta.tables import *
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC 
+# MAGIC
 # MAGIC CREATE DATABASE IF NOT EXISTS codydemos;
 # MAGIC USE codydemos;
 
@@ -66,13 +66,13 @@ uuidUdf= udf(lambda : str(uuid.uuid4()),StringType())
 # COMMAND ----------
 
 # MAGIC %md 
-# MAGIC 
+# MAGIC
 # MAGIC ## Notebook to stream multiple sources into multiple sinks
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC ### Stream 5: All Sensors Delta Table: Bronze --> Silver
 
 # COMMAND ----------
@@ -138,10 +138,11 @@ if isAllSensorsTempThere == False:
 # COMMAND ----------
 
 # MAGIC %md 
-# MAGIC 
+# MAGIC
 # MAGIC ## Tip! 
-# MAGIC 
+# MAGIC
 # MAGIC To make foreachBatch indempotent delta supports the following:
+# MAGIC
 
 # COMMAND ----------
 

@@ -29,9 +29,13 @@ CREATE WIDGET TEXT InputLocation DEFAULT  ""
 
 -- COMMAND ----------
 
-DROP DATABASE IF EXISTS demo_sql CASCADE;
-CREATE DATABASE IF NOT EXISTS demo_sql;
-USE demo_sql;
+USE CATALOG main;
+
+-- COMMAND ----------
+
+DROP DATABASE IF EXISTS main.codydemos CASCADE;
+CREATE DATABASE IF NOT EXISTS main.codydemos;
+USE main.codydemos;
 
 -- COMMAND ----------
 
@@ -177,25 +181,7 @@ SELECT * FROM Silver_AllSensors_Simple
 ALTER TABLE Silver_AllSensors_Simple SET TBLPROPERTIES ('delta.targetFileSize'='64mb');
 
 
-OPTIMIZE Silver_AllSensors_Simple ZORDER BY (MeasurementDateTime, sellerid, orderid);
-
--- COMMAND ----------
-
--- MAGIC %md
--- MAGIC
--- MAGIC ## Details on Bloom Indexs Here:
--- MAGIC https://docs.databricks.com/delta/optimizations/bloom-filters.html
-
--- COMMAND ----------
-
--- DBTITLE 1,Indexes - Bloom Filter Index
-
---Bloom filters need to exist first, so if you add an index later you need to reprocess the files (an optimize, etc.)
-
---Ideally a column that is highly selective but not used in z-order (text, other timestamps, etc.)
-CREATE BLOOMFILTER INDEX
-ON TABLE Silver_AllSensors_Simple
-FOR COLUMNS(Id OPTIONS (fpp=0.1, numItems=50000000))
+OPTIMIZE Silver_AllSensors_Simple ZORDER BY (MeasurementDateTime);
 
 -- COMMAND ----------
 
